@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        .login-form {
+            margin-top: 100px;
+            width: 50%;
+            background-image: url('/media/cloud.gif');
+            opacity: 0.4;
+            background-size: cover; 
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            border-radius: 10px;
+            width: 500px;
+            height: 500px;
+        }
+        
+        .login-form input {
+            width: 300px;
+            height: 40px;
+            margin: 10px;
+            padding: 10px;
+            background-color: transparent;
+            border: none;
+            border-radius: 5px;
+            border-bottom: #007bff 1px solid;
+        }
+        .login-form button {
+            width: 300px;
+            height: 40px;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #007bff4d;
+            color: white;
+            font-size: 20px;
+        }
+        
+    </style>
+    <div class="container text-center">
+        <!-- <div style="position: relative; display: inline-block;">
+            <img src="/media/input_cloud.jpeg" alt="Your Image" style="width: 100%; height: auto;">
+    
+            <input type="text" id="inputField" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        </div> -->
+        <div class="login-form">
+            <form action="{% url 'accounts:login' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name="username" class="first-focus" placeholder="INPUT USERNAME">
+                <input type="password" name="password" placeholder="INPUT PASSWORD">
+                <button type="submit">LOGIN</button>
+            </form>
+        </div>
+        
+        
+    </div>
+
+    <script>
+        document.querySelector('.first-focus').focus();
+    </script>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html'%}
+{% block content %}
+    <style>
+        .image-view{
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+    <h1>SIGNUP</h1>
+    <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="INPUT USERNAME">
+        <input type="password" name="password" placeholder="INPUT PASSWORD">
+        <input type="password" name="password2" placeholder="INPUT PASSWORD AGAIN">
+        <div class="image-view" id="image-preview"></div>
+        <input type="file" name="profile_pic" onchange="loadFile(this)">
+        <input type="email" name="email" placeholder="INPUT EMAIL">
+        <textarea name="introduce" placeholder="INTRODUCE YOURSELF :>"></textarea>
+        <button type="submit">SIGNUP</button>
+    </form>
+    
+{% endblock %}
