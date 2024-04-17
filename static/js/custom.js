@@ -21,7 +21,7 @@ function loadFile(input) {
 
     // 새로운 이미지 요소 생성
     let newImage = document.createElement("img");
-    newImage.style.width = "100%"; // 이미지 너비 설정
+    newImage.style.width = "200px"; // 이미지 너비 설정
     newImage.style.height = "100%"; // 이미지 높이 설정
     newImage.style.objectFit = "cover"; // 이미지가 div에 맞게 잘리지 않도록 설정
 
@@ -31,3 +31,30 @@ function loadFile(input) {
     // 이미지를 이미지 표시 공간에 추가
     container.appendChild(newImage);
 };
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const body = document.body;
+  let cursor = null;
+
+  // 마우스 이동 이벤트 핸들러
+  body.addEventListener('mousemove', function(event) {
+      if (!cursor) {
+          createCursor();
+      }
+      updateCursor(event.clientX-30, event.clientY-30);
+  });
+
+  // 커서를 생성하는 함수
+  function createCursor() {
+      cursor = document.createElement('div');
+      cursor.classList.add('cursor');
+      body.appendChild(cursor);
+  }
+
+  // 커서 위치를 업데이트하는 함수
+  function updateCursor(x, y) {
+      cursor.style.left = x + 'px';
+      cursor.style.top = y + 'px';
+  }
+});

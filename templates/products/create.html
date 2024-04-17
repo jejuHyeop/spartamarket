@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        .createForm {
+            margin-top: 70px;
+            width: 80%;
+            align-items: center;
+            margin-bottom: 100px;
+        }
+        .page-subject {
+            margin-bottom: 50px;
+        }
+
+        .introtext {
+            height: 200px;
+            resize: none;
+        }
+
+        .first-focus {
+            margin-bottom: 20px;
+        }
+
+        .productPicBtn {
+            margin-top: 20px;
+        }
+        #upload-photo {
+            display: none;
+        }
+        .product-info {
+            align-items: center;    
+            justify-content: center;
+        }
+        .createBtn{
+            padding-left: 25px;
+            padding-right: 25px;
+            margin-top: 70px;
+            margin-right: 40px;
+            font-size: 20px;
+        }
+        .info-table {
+            width: 100%;
+            background-color: transparent;
+            margin-top: 40px;
+        }
+        .info-table td {
+            padding: 10px;
+            font-size: 15px;
+        }
+        .info-table td:nth-child(1) {
+            width: 30%;
+            font-weight: bolder;
+            font-size: 20px;
+            color: white;
+            text-shadow: 0px 0px 4px #0048ff;
+        }
+    </style>
+    <div class="container text-center createForm">
+        <h1 class="page-subject">상품 등록</h1>
+        <form method="post" enctype="multipart/form-data" name="createProductForm">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="image-view" id="image-preview">
+                        <img src="/media/noimage.png" style="width:200px; object-fit: cover;">
+                    </div>
+                    <label for="upload-photo" class="btn btn-moong productPicBtn">사진 등록</label>
+                    <input type="file" id="upload-photo" name="productImage" style="border-bottom: none;" onchange="loadFile(this)">
+                </div>
+                <div class="col-lg-8">
+                    <input type="text" name="productTitle" class="first-focus form-control" placeholder="상품명을 입력해주세요">
+                    <textarea name="productDesc" class="introtext form-control" placeholder="상품을 소개해보세요"></textarea>
+                </div>
+            </div>
+
+            <div class="product-info">
+                <table class="info-table">
+                    <tr>
+                        <td>상품가격</td>
+                        <td><input type="number" step="10" name="productPrice" class="form-control" placeholder="가격을 입력해주세요"></td>
+                    </tr> 
+                    <tr>
+                        <td>상품재고</td>
+                        <td><input type="number" name="productStock" class="form-control" placeholder="재고를 입력해주세요"></td>
+                    </tr>
+                    <tr>
+                        <td>해시태그 등록</td>
+                        <td><input type="text" name="productHashtag" class="form-control" placeholder="해시태그를 입력해주세요. (예)#패션 #의류"></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <button type="button" onclick="checkCreateForm()" class="btn btn-moong createBtn">제품등록</button>
+            <a href="{% url 'products:index' %}" class="btn btn-moong createBtn">뒤로가기</a>
+        </form> 
+    </div>
+
+    <script>
+        function checkCreateForm(){
+            cpf = document.createProductForm;
+            if(cpf.productTitle.value == ""){
+                alert("상품명을 입력해주세요.");
+                cpf.productTitle.focus();
+                return;
+            }else if(cpf.productPrice.value == ""){
+                alert("상품가격을 입력해주세요.");
+                cpf.productPrice.focus();
+                return;
+            }else if(cpf.productStock.value == ""){
+                alert("상품재고를 입력해주세요.");
+                cpf.productStock.focus();
+                return;
+            }else{
+                cpf.submit();
+            }
+        }
+    </script>
+{% endblock %}
