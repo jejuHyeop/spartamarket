@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+<style>
+    .wishcon{
+        margin-top: 50px;
+        width: 80%;
+    }
+
+    .wishtable{
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-top: 50px;
+    }
+    .wishtable tr{
+        border-bottom: 1px solid #c6c9cc;
+    }
+    .wishtable tbody > tr:hover{
+        background-color: #c6c9cc21;
+    }
+    .wishtable thead > tr, .wishtable thead th{
+        background-color: #97999b23;
+        color: white;
+        font-size: 17px;
+        padding: 15px;
+    }
+    .wishtable tbody td{
+        padding: 25px;
+    }
+
+    .product-pic{
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+    }
+
+    .protitle{
+        font-size: 20px;
+        color: black;
+    }
+    .protitle:hover{
+        color: blue;
+        font-weight: bold;
+    }
+    img:hover{
+        opacity: 0.5;
+    }
+    .btn-myprod-cancel{
+        background-color: transparent;
+        border:none;
+    }
+    .original-price {
+        text-decoration: line-through;
+    }
+
+    .sale_price {
+        margin-left: 10px;
+        color: red;
+    }
+    .avail{
+        color: green;
+        font-weight: bold;
+    }
+    .not-avail{
+        color: red;
+        font-weight: bold;
+    }
+</style>
+<div class="container wishcon">
+    <div class="page-subject text-center">찜 목록</div>
+    <table class="wishtable text-center">
+        <thead>
+            <tr>
+                <th scope="col">순번</th>
+                <th scope="col">상품이미지</th>
+                <th scope="col">상품명</th>
+                <th scope="col">가격</th>
+                <th scope="col">구매가능여부</th>
+                <th scope="col">취소</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in products %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{% url 'products:detail' p.id %}"><img src="{{ p.getpic }}" class="product-pic"></a></td>
+                <td><a href="{% url 'products:detail' p.id %}" class="protitle">{{ p.title }}</a></td>
+                <td>{% if p.sale_price %}<sup class="original-price">{{ p.price|intcomma }}</sup><span class="sale_price">{{ p.sale_price|intcomma }}</span>{% else %}{{ p.price|intcomma }}{% endif %} points</td>
+                <td>{% if p.is_avail %}
+                    <span class="avail">가능</span>
+                    {% else %}
+                    <span class="not-avail">불가</span>
+                    {% endif %}</td>
+                <td>    
+                    <a href="{% url 'products:mine' p.id %}" class="btn-myprod-cancel">❎</a>
+                </td>
+            </tr>
+            
+            {% empty %}
+                <tr>
+                    <td colspan="6">등록된 상품이 없습니다.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    
+</script>
+{% endblock %}

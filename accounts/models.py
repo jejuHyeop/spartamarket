@@ -11,7 +11,7 @@ class User(AbstractUser):
         DIAMOND = "D", "Diamond"
 
     profile_pic = models.ImageField(upload_to="profile_pics/", blank=True)
-    point = models.IntegerField(default=0)
+    point = models.IntegerField(default=500)
     following = models.ManyToManyField("self", symmetrical=False, blank=True, related_name="followers")
     introduce = models.TextField(blank=True)
     grade = models.CharField(max_length=1, choices=Grades.choices, default=Grades.BRONZE)
@@ -22,7 +22,7 @@ class User(AbstractUser):
     def getpic(self):
         if self.profile_pic:
             return self.profile_pic.url
-        return "/media/noimage.png"
+        return "/static/images/noprofile.png"
 
     @property
     def display_grade(self):

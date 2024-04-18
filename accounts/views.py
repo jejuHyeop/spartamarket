@@ -3,9 +3,11 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import check_password
-from django.http import JsonResponse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
+from django.utils.safestring import mark_safe
 from .models import User
+from django.contrib import messages
+from django.utils import timezone
 import json
 
 # Create your views here.
@@ -18,6 +20,19 @@ def login(request):
         userpass = request.POST.get("password")
         user = authenticate(request, username=username, password=userpass)
         if user is not None:
+            if user.last_login:
+                if user.last_login.date() != timezone.now().date():
+                    user.point += 10
+                    user.save()
+                    message = mark_safe(f"{user.username} 님! \n오늘도 오셨군요! 추가로 <b class='add-point'>10 point</b> 가 지급되었습니다!")
+                    messages.info(request,message)
+                else:
+                    messages.info(request, f"{user.username} 님! 환영합니다!")
+            else:
+                user.point += 10
+                user.save()
+                message = mark_safe(f"{user.username} 님! 환영합니다! \n저희 사이트는 하루에 한 번 로그인을 하면 <b class='add-point'>10 point</b> 가 지급되요!")
+                messages.info(request, message)
             auth_login(request, user)
             return redirect("accounts:index")
         else:
@@ -36,7 +51,6 @@ def signup(request):
         profile_pic = request.FILES.get("profile_pic")
         introduce = request.POST.get("introduce")
         User.objects.create_user(username=username, password=userpass, email=email, profile_pic=profile_pic, introduce=introduce)
-        # 회원가입 성공 처리
         return redirect("accounts:login")
     return render(request, "accounts/signup.html")
 

@@ -78,14 +78,16 @@
         .changeValueText{
             background-color: transparent;
             border: none;
-            width: 100%;
+            resize: none;
+            width: 70%;
+            height: 150px;
         }
         .tr-btn-section td{
             text-align: right;
-            margin-top: 40px;
         }
         .tr-btn-section button{
             margin-left: 20px;
+            margin-top: 50px;
         }
         #upload-photo {
             opacity: 0;
@@ -215,7 +217,7 @@
                     </tr>
                     <tr>
                         <td>자기소개</td>
-                        <td class="text-end">
+                        <td class="text-start">
                             <textarea class="changeValueText" disabled>{{ user.introduce }}</textarea>
                             <button id="commChBtn" class="btn-sm btn-update" onclick="createTextForm()">수정하기</button>
                         </td>

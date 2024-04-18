@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!cursor) {
           createCursor();
       }
-      updateCursor(event.clientX-30, event.clientY-30);
+      updateCursor(event.clientX-20, event.clientY-20);
   });
 
   // 커서를 생성하는 함수

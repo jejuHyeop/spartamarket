@@ -30,7 +30,7 @@
             align-items: center;    
             justify-content: center;
         }
-        .createBtn{
+        .updateBtn{
             padding-left: 25px;
             padding-right: 25px;
             margin-top: 70px;
@@ -113,14 +113,14 @@
             <div class="row">
                 <div class="col-lg-4 mt-4">
                     <div class="image-view" id="image-preview">
-                        <img src="{% static 'images/noprod.png' %}" style="width:200px; object-fit: cover;">
+                        <img src="{{ p.getpic }}" style="width:200px; object-fit: cover;">
                     </div>
                     <label for="upload-photo" class="btn btn-moong productPicBtn">사진 등록</label>
                     <input type="file" id="upload-photo" name="productImage" style="border-bottom: none;" onchange="loadFile(this)">
                 </div>
                 <div class="col-lg-8 mt-4">
-                    <input type="text" name="productTitle" class="first-focus form-control" placeholder="상품명을 입력해주세요">
-                    <textarea name="productDesc" class="introtext form-control" placeholder="상품을 소개해보세요"></textarea>
+                    <input type="text" name="productTitle" class="first-focus form-control" placeholder="상품명을 입력해주세요" value="{{p.title}}">
+                    <textarea name="productDesc" class="introtext form-control" placeholder="상품을 소개해보세요">{{ p.description }}</textarea>
                 </div>
             </div>
 
@@ -129,19 +129,19 @@
                     <tr>
                         <td>상품가격</td>
                         <td class="text-start">
-                            <input type="number" step="10" name="productPrice" class="priceInput" placeholder="원가를 입력해주세요">
-                            <button type="button" class="btn btn-moong btn-sm saleBtn" onclick="saleTrShow()">할인가입력</button>
+                            <input type="number" step="10" name="productPrice" class="priceInput" placeholder="원가를 입력해주세요" value="{{ p.price }}">
+                            <button type="button" class="btn btn-moong btn-sm saleBtn" onclick="saleTrShow()">{% if p.sale_price %}입력취소{% else %}할인가입력{% endif %}</button>
                         </td>
                     </tr> 
-                    <tr class="saleTr" style="display: none;">
+                    <tr class="saleTr" {% if not p.sale_price %}style="display: none;"{% endif %}>
                         <td>할인가격</td>
                         <td class="text-start">
-                            <input type="number" disabled="true" step="10" name="productSalePrice" class="priceInput" placeholder="할인가를 입력해주세요">
+                            <input type="number" disabled="true" step="10" name="productSalePrice" class="priceInput" placeholder="할인가를 입력해주세요" value="{{ p.sale_price }}">
                         </td>
                     </tr> 
                     <tr>
                         <td>상품재고</td>
-                        <td><input type="number" name="productStock" class="form-control" placeholder="재고를 입력해주세요"></td>
+                        <td><input type="number" name="productStock" class="form-control" placeholder="재고를 입력해주세요" value="{{ p.stock }}"></td>
                     </tr>
                     <tr>
                         <td>해시태그 등록</td>
@@ -151,13 +151,17 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td class="text-start badge-container"></td>
+                        <td class="text-start badge-container">
+                            {% for hash in p.hashtags.all %}
+                                <span class="badge">{{ hash.name }}<input type="hidden" name="productHashtag" value="{{ hash.name }}"><span class="badge-close">x</span></span>
+                            {% endfor %}
+                        </td>
                     </tr>
                 </table>
             </div>
             
-            <button type="button" onclick="checkCreateForm()" class="btn btn-moong createBtn">제품등록</button>
-            <a href="{% url 'products:index' %}" class="btn btn-moong createBtn">뒤로가기</a>
+            <button type="button" onclick="checkCreateForm()" class="btn btn-moong updateBtn">수정완료</button>
+            <a href="{% url 'products:index' %}" class="btn btn-moong updateBtn">뒤로가기</a>
         </form> 
     </div>
 
@@ -209,6 +213,13 @@
 
             badge.appendChild(closeButton);
             badgeContainer.appendChild(badge); // 배지를 badgeContainer에 추가
+        }
+
+        const existBadgeClose = document.querySelectorAll('.badge-close');
+        for (const close of existBadgeClose) {
+            close.addEventListener('click', function() {
+                close.parentElement.remove();
+            });
         }
 
         function checkCreateForm() {

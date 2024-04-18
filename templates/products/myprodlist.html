@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
-{% block content %}
+{% load static %}
+{% block content %} 
 <style>
     .wishcon{
         margin-top: 50px;
@@ -66,18 +67,23 @@
         color: red;
         font-weight: bold;
     }
+    .ud-icon{
+        width: 20px;
+        height: 20px;
+    }
 </style>
 <div class="container wishcon">
-    <div class="page-subject text-center">찜 목록</div>
+    <div class="page-subject text-center">내 상품목록</div>
     <table class="wishtable text-center">
         <thead>
             <tr>
                 <th scope="col">순번</th>
                 <th scope="col">상품이미지</th>
                 <th scope="col">상품명</th>
-                <th scope="col">가격</th>
-                <th scope="col">구매가능여부</th>
-                <th scope="col">취소</th>
+                <th scope="col">조회수</th>
+                <th scope="col">좋아요</th>
+                <th scope="col">수정</th>
+                <th scope="col">삭제</th>
             </tr>
         </thead>
         <tbody>
@@ -86,18 +92,13 @@
                 <th scope="row">{{ forloop.counter }}</th>
                 <td><a href="{% url 'products:detail' p.id %}"><img src="{{ p.getpic }}" class="product-pic"></a></td>
                 <td><a href="{% url 'products:detail' p.id %}" class="protitle">{{ p.title }}</a></td>
-                <td>{% if p.sale_price %}<sup class="original-price">{{ p.price|intcomma }}</sup><span class="sale_price">{{ p.sale_price|intcomma }}</span>{% else %}{{ p.price|intcomma }}{% endif %} points</td>
-                <td>{% if p.is_avail %}
-                    <span class="avail">가능</span>
-                    {% else %}
-                    <span class="not-avail">불가</span>
-                    {% endif %}</td>
+                <td>{{ p.hits }}</td>
+                <td>{{ p.likey.count }}</td>
                 <td>
-                    <form method="post" action="{% url 'products:mylist' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="product_id" value="{{ p.id }}">
-                        <button type="submit" class="btn-myprod-cancel">❎</button>
-                    </form>
+                    <a href="{% url 'products:update' p.id %}"><img src="{% static 'images/write.png' %}" class="ud-icon"></a>
+                </td>
+                <td>
+                    <img src="{% static 'images/delete.png' %}" class="ud-icon">
                 </td>
             </tr>
             

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
     <style>
@@ -24,7 +25,7 @@
     </style>
     <div class="container text-center vertical intro">
         <p class="moogge-intro">반가워, 나는 <b class="moogge">뭉게</b><sup>☁️</sup>야 </p>
-        <img class="main-image" src="/media/cloud.png">
+        <img class="main-image" src="{% static 'images/cloud.png' %}">
         <p class="site-intro mt-4">
             지친 하루, 쇼핑하면서 <b class="moogge">뭉게</b>진 인상을 풀어보자~ <br>
             우선 <a href="{% url 'accounts:login' %}">로그인</a>먼저 해주라구~ 름 <br>

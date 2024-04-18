@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+{% load static %}
 {% block content %}
     <style>
         .image-view{
@@ -84,7 +85,7 @@
 
                 <label for="upload-photo" class="btn btn-secondary">프로필 사진 등록</label>
                 <div class="image-view" id="image-preview">
-                    <img src="/media/noimage.png" style="width:200px; height: 200px; object-fit: cover;">
+                    <img src="{% static 'images/noprofile.png' %}" style="width:200px; height: 200px; object-fit: cover;">
                 </div>
                 <input type="file" id="upload-photo" name="profile_pic" style="border-bottom: none;" onchange="loadFile(this)">
                 

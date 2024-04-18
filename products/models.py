@@ -25,7 +25,7 @@ class Products(models.Model):
     def getpic(self):
         if self.image:
             return self.image.url
-        return "/media/noimage.png"
+        return "/static/images/noprod.png"
     
     def getstock(self):
         if self.stock == 0:
@@ -43,3 +43,12 @@ class Products(models.Model):
         pass
 
 
+class HashTag(models.Model):
+    name = models.CharField(max_length=50)
+    products = models.ManyToManyField(Products, related_name="hashtags")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        pass

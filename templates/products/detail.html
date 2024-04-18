@@ -49,6 +49,9 @@
         width: 20%;
         text-shadow: 0px 0px 4px #0048ff;
     }
+    .info-table td:nth-child(2){
+        padding-left: 40px;
+    }
     .info-table{
         background-color: transparent;
         text-align: left;
@@ -134,8 +137,27 @@
         background-color: #c6c9cc;
         color: white;
     }
+    .hashtag{
+        background-color: #a1bbf7;
+        color: white;
+        padding: 5px;
+        margin-right: 5px;
+        margin-bottom: 10px;
+    }
+    .udsection{
+        margin-top: 20px;
+    }
+    .udsection button{
+        margin-left: 10px
+    }
+
 </style>
 <div class="container text-center">
+    <div class="text-end">
+        {% for i in p.hashtags.all %}
+            <span class="badge hashtag"># {{ i.name }}</span>
+        {% endfor %}
+    </div>
     <div class="row">
         <div class="col-8" style="margin: auto;">
             <table class="info-table">
@@ -186,6 +208,7 @@
                 </tbody>
             </table>    
         </div>
+
         <div class="col-4" style="margin: auto;">
             <img src="{{ p.getpic }}" class="product-pic" alt="...">
         </div>
@@ -219,12 +242,18 @@
         </div>
     </div>
 
+    {% if user == p.seller %}
+        <div class="text-end udsection">
+            <a href="{% url 'products:update' p.id %}" class="btn btn-moong">게시글 수정</a>
+            <button type="button" onclick="checkRemove()" class="btn btn-moong">게시글 삭제</button>
+        </div>
+    {% endif %}
+
     <div class="productBtn">
-        <a href="#" class="btn btn-cart">장바구니</a>
         {% if user in p.wishuser.all %}
-            <a href="{% url 'products:myprod' p.id %}" class="btn btn-myprod-cancel">찜취소</a>
+            <a href="{% url 'products:mine' p.id %}" class="btn btn-myprod-cancel">찜취소</a>
         {% else %}
-            <a href="{% url 'products:myprod' p.id %}" class="btn btn-myprod">찜하기</a>
+            <a href="{% url 'products:mine' p.id %}" class="btn btn-myprod">찜하기</a>
         {% endif %}
         <a href="#" class="btn btn-buy">구매하기</a>
         <a class="btn btn-back" onclick="goBackPage()">뒤로가기</a>
@@ -277,6 +306,22 @@
 
     function goBackPage(){
         window.history.back();
+    }
+
+    function checkRemove(){
+        if(confirm("정말 삭제하시겠습니까?")){
+            fetch("{% url 'products:delete' p.id %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            }).then(response => response.json())
+            .then(data => {
+                if(data.result == true){
+                    location.href = "{% url 'products:index' %}";
+                }
+            });
+        };
     }
 </script>
 

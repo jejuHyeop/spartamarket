@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% load mathfilters %}
+{% load static %}
 {% block content %}
 <style>
     .container {
@@ -88,6 +89,35 @@
         margin-left: 20px;
         font-size: 12px;
     }
+
+    .pagination-custom {
+        position: relative;
+        }
+
+    .page-number-custom {
+        position: absolute;
+        top: 7px; /* 숫자의 위치 조정을 위해 적절한 값으로 조정하세요 */
+        left: 10px; /* 숫자의 위치 조정을 위해 적절한 값으로 조정하세요 */;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 11px;
+        font-weight: bold;
+        text-align: center;
+        width: 40px;
+    }
+    .paging-img{
+        width: 60px;
+        object-fit: contain;
+    }
+    .active-page{
+        text-shadow: 0 0 15px #2b00ff;
+    }
+    .paging-arrow{
+        width: 20px;
+        object-fit: contain;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
 </style>
 <div class="container text-center">
     
@@ -156,26 +186,36 @@
     <nav aria-label="Page navigation example" class="nav-pagination">
         <ul class="pagination justify-content-center">
             {% if obj.has_previous %}
-                <li class="page-item"><a class="page-link"href="{% url 'products:index' %}?cate={{cate}}&keyword={{keyword}}&stockOut={{stockOut}}&saleProd={{saleProd}}&sort={{sort}}&page=1">HOME</a></li>
-                <li class="page-item"><a class="page-link"href="{% url 'products:index' %}?cate={{cate}}&keyword={{keyword}}&stockOut={{stockOut}}&saleProd={{saleProd}}&sort={{sort}}&page={{ obj.previous_page_number }}">
-                        < </a>
-                </li>
+                <a href="{% url 'products:index' %}?cate={{cate}}&keyword={{keyword}}&stockOut={{stockOut}}&saleProd={{saleProd}}&sort={{sort}}&page=1">
+                    <img src="{% static 'images/left-double.png' %}" class="paging-arrow" alt="Your Image">
+                </a>
+                <a href="{% url 'products:index' %}?cate={{cate}}&keyword={{keyword}}&stockOut={{stockOut}}&saleProd={{saleProd}}&sort={{sort}}&page={{ obj.previous_page_number }}">
+                    <img src="{% static 'images/left.png' %}" class="paging-arrow" alt="Your Image">
+                </a>
             {% endif %}
 
             {% for i in obj.paginator.page_range %}
                 {% if i >= obj.number|sub:1|intdiv:10|mul:10|add:1 and obj.number|sub:1|intdiv:10|add:1|mul:10 >= i %}
-                    <li class="page-item {% if obj.number == i %}active{% endif %}"><a class="page-link" href="{% url 'products:index' %}?cate={{cate}}&keyword={{keyword}}&stockOut={{stockOut}}&saleProd={{saleProd}}&sort={{sort}}&page={{i}}">{{i}}</a></li>
+                    <div class="pagination-custom">
+                        <a href="{% url 'products:index' %}?cate={{cate}}&keyword={{keyword}}&stockOut={{stockOut}}&saleProd={{saleProd}}&sort={{sort}}&page={{i}}"><img {% if obj.number == i %}src="{% static 'images/clo_active.png' %}"{% else %}src="{% static 'images/clo.png' %}"{% endif %} class="paging-img" alt="Your Image"></a>
+                        <a href="{% url 'products:index' %}?cate={{cate}}&keyword={{keyword}}&stockOut={{stockOut}}&saleProd={{saleProd}}&sort={{sort}}&page={{i}}"><div class="page-number-custom {% if obj.number == i %}active-page{% endif %}">{{ i }}</div></a>
+                    </div>
                 {% endif %}
             {% endfor %}
 
 
             {% if obj.has_next %}
-                <li class="page-item"><a class="page-link" href="{% url 'products:index' %}?cate={{cate}}&keyword={{keyword}}&stockOut={{stockOut}}&saleProd={{saleProd}}&sort={{sort}}&page={{ obj.next_page_number}}"> > </a></li>
-                <li class="page-item"><a class="page-link" href="{% url 'products:index' %}?cate={{cate}}&keyword={{keyword}}&stockOut={{stockOut}}&saleProd={{saleProd}}&sort={{sort}}&page={{ obj.paginator.num_pages }}"> END </a></li>
+                <a href="{% url 'products:index' %}?cate={{cate}}&keyword={{keyword}}&stockOut={{stockOut}}&saleProd={{saleProd}}&sort={{sort}}&page={{ obj.next_page_number}}">
+                    <img src="{% static 'images/right.png' %}" class="paging-arrow" alt="Your Image">
+                </a>
+                <a href="{% url 'products:index' %}?cate={{cate}}&keyword={{keyword}}&stockOut={{stockOut}}&saleProd={{saleProd}}&sort={{sort}}&page={{ obj.paginator.num_pages }}">
+                    <img src="{% static 'images/right-double.png' %}" class="paging-arrow" alt="Your Image">
+                </a>
             {% endif %}
         </ul>
     </nav>
 </div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 

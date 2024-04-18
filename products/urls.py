@@ -7,6 +7,9 @@ urlpatterns = [
     path("<int:pid>/detail/", views.detail, name="detail"),
     path("create/", views.create, name="create"),
     path("<int:pid>/likey/", views.likey, name="likey"),
-    path("<int:pid>/myprod/", views.myprod, name="myprod"),
-    path("mylist/", views.mylist, name="mylist"),
+    path("myprodlist/", views.myprodlist, name="myprodlist"),
+    path("minelist/", views.minelist, name="minelist"),
+    path("<int:pid>/mine/", views.mine, name="mine"),
+    path("<int:pid>/update/", views.update, name="update"),
+    path("<int:pid>/delete/", views.delete, name="delete"),
 ]
