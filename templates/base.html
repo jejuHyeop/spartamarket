@@ -12,6 +12,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Gaegu&family=Poor+Story&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
         .navbar {
             position: fixed;
             top: 0;
@@ -27,6 +28,7 @@
             background-color: rgba(227, 234, 255, 0.72);
             padding-top: 100px;
         }
+        
         .profile_smallpic{
             width: 40px;
             height: 40px;
@@ -45,7 +47,7 @@
             pointer-events: none;
         }
         html{
-            height: 100%;
+            height: 100vh;
             
         }
         body{
@@ -57,15 +59,32 @@
             width: 40px;
             margin-left: 10px;
         }
-        #fixedAlert {
+        #fixedContent{
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #f44336;
-            color: white;
+            top: 80px;
+            
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        #fixedAlert {
             padding: 15px;
+            padding-left: 40px;
+            padding-right: 40px;
             border-radius: 5px;
             display: none;
+            color: white;
+        }
+        .tag-info{
+            background-color: rgb(206, 200, 200);
+        }
+        .tag-success{
+            background-color: rgb(172, 197, 168);
+        }
+        .tag-error{
+            background-color: rgb(205, 108, 108);
+        }
+        .add-point{
+            color: green;
         }
     </style>
 </head>
@@ -89,8 +108,11 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">프로필</a></li>
+                            <li><a class="dropdown-item" href="{% url 'products:pointlist' %}">포인트내역</a></li>
                             <li><a class="dropdown-item" href="{% url 'products:myprodlist' %}">내상품관리</a></li>
                             <li><a class="dropdown-item" href="{% url 'products:minelist' %}">찜목록</a></li>
+                            <li><a class="dropdown-item" href="{% url 'products:buylist' %}">구매목록</a></li>
+
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -110,9 +132,12 @@
     
     {% endblock %}
 
+    <div id="fixedContent">
     {% for message in messages %}
-        <div id="fixedAlert">{{ message.tags }}{{ message.message }}</div>
+        <div id="fixedAlert" class="tag-{{message.tags}}">{{ message.message }}</div>
     {% endfor %}
+    </div>
+
     <script src="{% static 'js/custom.js' %}"></script>
     <script>
         const firstfocus = document.querySelector('.first-focus')
@@ -126,14 +151,13 @@
             setTimeout(function(){
                 document.getElementById("fixedAlert").style.transition = "opacity 1s";
                 document.getElementById("fixedAlert").style.opacity = "0";
-            }, 2000); 
+            }, 3000); 
 
             setTimeout(function(){
                 document.getElementById("fixedAlert").style.display = "none";
-            }, 3000); // Hide after 3 seconds
+            }, 4000); 
         }
 
-        // Call the function to show the fixed alert
         showFixedAlert();
     </script>
 </body>

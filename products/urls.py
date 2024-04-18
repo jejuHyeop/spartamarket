@@ -11,5 +11,8 @@ urlpatterns = [
     path("minelist/", views.minelist, name="minelist"),
     path("<int:pid>/mine/", views.mine, name="mine"),
     path("<int:pid>/update/", views.update, name="update"),
-    path("<int:pid>/delete/", views.delete, name="delete"),
+    path("delete/", views.delete, name="delete"),
+    path("buy/", views.buy, name="buy"),
+    path("buylist/", views.buylist, name="buylist"),
+    path("pointlist/", views.pointlist, name="pointlist"),
 ]

@@ -3,33 +3,6 @@
 {% load static %}
 {% block content %} 
 <style>
-    .wishcon{
-        margin-top: 50px;
-        width: 80%;
-    }
-
-    .wishtable{
-        width: 100%;
-        border-collapse: collapse;
-        border-spacing: 0;
-        margin-top: 50px;
-    }
-    .wishtable tr{
-        border-bottom: 1px solid #c6c9cc;
-    }
-    .wishtable tbody > tr:hover{
-        background-color: #c6c9cc21;
-    }
-    .wishtable thead > tr, .wishtable thead th{
-        background-color: #97999b23;
-        color: white;
-        font-size: 17px;
-        padding: 15px;
-    }
-    .wishtable tbody td{
-        padding: 25px;
-    }
-
     .product-pic{
         width: 100px;
         height: 100px;
@@ -72,9 +45,9 @@
         height: 20px;
     }
 </style>
-<div class="container wishcon">
-    <div class="page-subject text-center">내 상품목록</div>
-    <table class="wishtable text-center">
+<div class="container customcon">
+    <div class="page-subject text-center">상품관리</div>
+    <table class="customtable text-center">
         <thead>
             <tr>
                 <th scope="col">순번</th>
@@ -98,19 +71,36 @@
                     <a href="{% url 'products:update' p.id %}"><img src="{% static 'images/write.png' %}" class="ud-icon"></a>
                 </td>
                 <td>
-                    <img src="{% static 'images/delete.png' %}" class="ud-icon">
+                    <a onclick="checkRemove(this)" class="product_id" pid="{{ p.id }}"><img src="{% static 'images/delete.png' %}" class="ud-icon"></a>
                 </td>
             </tr>
             
             {% empty %}
                 <tr>
-                    <td colspan="6">등록된 상품이 없습니다.</td>
+                    <td colspan="7">등록하신 상품이 없습니다.</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
 <script>
-    
+    function checkRemove(e){
+        const formData = new FormData();
+        const pid = e.getAttribute('pid');
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        formData.append('product_id', pid);
+
+        if(confirm("정말 삭제하시겠습니까?")){
+            fetch("{% url 'products:delete' %}", {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                if(data.result == true){
+                    window.location.reload();
+                }
+            });
+        };
+    }
 </script>
 {% endblock %}

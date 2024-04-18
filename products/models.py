@@ -1,5 +1,8 @@
 from django.db import models
 from accounts.models import User
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
+
 
 # Create your models here.
 class Products(models.Model):
@@ -43,6 +46,8 @@ class Products(models.Model):
         pass
 
 
+
+
 class HashTag(models.Model):
     name = models.CharField(max_length=50)
     products = models.ManyToManyField(Products, related_name="hashtags")
@@ -52,3 +57,36 @@ class HashTag(models.Model):
 
     class Meta:
         pass
+
+@receiver(pre_delete, sender=Products)
+def remove_unused_hashtags(sender, instance, **kwargs):
+    hashtags = instance.hashtags.all()
+    for hashtag in hashtags:
+        if hashtag.products.count() <= 1:
+            hashtag.delete()
+
+
+class BuyList(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name="buylist")
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="buylist")
+    quantity = models.IntegerField()
+    priced = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.title} - {self.buyer.username} - {self.quantity}"
+
+    class Meta:
+        pass
+
+
+class PointHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="pointhistory")
+    change_amount = models.IntegerField()
+    reason = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.change_amount} - {self.reason}"
+
+        

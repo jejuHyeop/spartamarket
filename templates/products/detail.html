@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load humanize %}
+{% load static %}
 {% load mathfilters %}
 {% block content %}
 <style>
@@ -190,7 +191,7 @@
                         <td>가격</td>
                         <td>
                             {% if p.sale_price %}
-                                <span class="original-price">{{ p.price|intcomma }} Points</span>
+                                <sup><span class="original-price">{{ p.price|intcomma }} Points</span></sup>
                                 <span class="sale_price">{{ p.sale_price|intcomma }} Points</span>
                             {% else %}
                                 {{ p.price|intcomma }} Points
@@ -249,13 +250,17 @@
         </div>
     {% endif %}
 
+
+    <input type="hidden" name="product_id" value="{{ p.id }}">
     <div class="productBtn">
         {% if user in p.wishuser.all %}
             <a href="{% url 'products:mine' p.id %}" class="btn btn-myprod-cancel">찜취소</a>
         {% else %}
             <a href="{% url 'products:mine' p.id %}" class="btn btn-myprod">찜하기</a>
         {% endif %}
-        <a href="#" class="btn btn-buy">구매하기</a>
+        {% if p.seller != user %}
+            <a href="{% url 'products:buy' %}?product_id={{ p.id }}" class="btn btn-buy">구매하기</a>
+        {% endif %}
         <a class="btn btn-back" onclick="goBackPage()">뒤로가기</a>
     </div>
     
@@ -309,16 +314,18 @@
     }
 
     function checkRemove(){
+        const formData = new FormData();
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        formData.append('product_id', '{{ p.id }}');
+
         if(confirm("정말 삭제하시겠습니까?")){
-            fetch("{% url 'products:delete' p.id %}", {
+            fetch("{% url 'products:delete' %}", {
                 method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'
-                }
+                body: formData
             }).then(response => response.json())
             .then(data => {
                 if(data.result == true){
-                    location.href = "{% url 'products:index' %}";
+                    location.href = "{% url 'products:index' %}?stockOut=false";
                 }
             });
         };

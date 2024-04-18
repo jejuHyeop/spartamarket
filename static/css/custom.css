@@ -8,7 +8,7 @@
 .nav-menu{
     padding: 0;
     margin: 10px;
-    margin-right: 20px;
+    margin-right: 30px;
     list-style: none;
     display: flex;
     justify-content: space-between;
@@ -16,9 +16,8 @@
     flex-wrap: wrap;
     color: white;
     text-decoration: none;
-    font-weight: bolder;
-    font-size: 25px;
-    font-family: "Poor Story", system-ui;
+    font-size: 20px;
+    font-family: "Jua", sans-serif;
     font-weight: 400;
     font-style: normal;
 
@@ -47,13 +46,12 @@
 }
 
 .page-subject{
-    color: rgb(255, 255, 255);
+    color: #383c60;
     font-weight: bold;
-    text-shadow: 0 0 8px rgba(0,0,0,0.5);
-    font-family: 'Nanum Gothic', sans-serif;
+    font-family: "Jua", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 35px;
+    font-size: 50px;
     margin-bottom: 30px;
 }
 
@@ -63,7 +61,7 @@
 
 
 .btn-moong{
-    --bs-btn-color:#fff;--bs-btn-bg:#c5c5ff;--bs-btn-border-color:#c5c5ff;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#d7e5ff;--bs-btn-hover-border-color:#d7e5ff;--bs-btn-focus-shadow-rgb:60,153,110;--bs-btn-active-color:#fff;--bs-btn-active-bg:#c5c5ff;--bs-btn-active-border-color:#c5c5ff;--bs-btn-active-shadow:inset 0 3px 5px rgba(0, 0, 0, 0.125);--bs-btn-disabled-color:#fff;--bs-btn-disabled-bg:#aeaeb573;--bs-btn-disabled-border-color:#198754
+    --bs-btn-color:#fff;--bs-btn-bg:#5377b9;--bs-btn-border-color:#5377b9;--bs-btn-hover-color:#fff;--bs-btn-hover-bg:#d7e5ff;--bs-btn-hover-border-color:#d7e5ff;--bs-btn-focus-shadow-rgb:60,153,110;--bs-btn-active-color:#fff;--bs-btn-active-bg:#c5c5ff;--bs-btn-active-border-color:#c5c5ff;--bs-btn-active-shadow:inset 0 3px 5px rgba(0, 0, 0, 0.125);--bs-btn-disabled-color:#fff;--bs-btn-disabled-bg:#aeaeb573;--bs-btn-disabled-border-color:#198754
 }
 
 
@@ -71,4 +69,33 @@
 
 a {
     text-decoration: none;
+}
+
+.customcon{
+    margin-top: 20px;
+    width: 80%;
+}
+
+.customtable{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 20px;
+    border-radius: 20px;
+}
+
+.customtable tr{
+    border-bottom: 1px solid #c6c9cc;
+}
+.customtable tbody > tr:hover{
+    background-color: #c6c9cc21;
+}
+.customtable thead > tr, .customtable thead th{
+    background-color: #5d7d9e23;
+    color: white;
+    font-size: 17px;
+    padding: 15px;
+}
+.customtable tbody td{
+    padding: 25px;
 }

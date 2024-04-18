@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 # Create your models here.
 
 class User(AbstractUser):
@@ -11,7 +13,7 @@ class User(AbstractUser):
         DIAMOND = "D", "Diamond"
 
     profile_pic = models.ImageField(upload_to="profile_pics/", blank=True)
-    point = models.IntegerField(default=500)
+    point = models.IntegerField(default=10000)
     following = models.ManyToManyField("self", symmetrical=False, blank=True, related_name="followers")
     introduce = models.TextField(blank=True)
     grade = models.CharField(max_length=1, choices=Grades.choices, default=Grades.BRONZE)

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "products.apps.ProductsConfig",
     "mathfilters",
-    "django.contrib.humanize"
+    "django.contrib.humanize",
+    "products.templatetags.custom_tags",
 ]
 
 MIDDLEWARE = [
